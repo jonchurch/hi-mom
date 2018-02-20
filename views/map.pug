@@ -1,0 +1,16 @@
+extends layout
+block content
+  #map
+    script.
+      var venues = !{JSON.stringify(venues)}
+      var map = L.map('map',{ center: [18.7680, 98.9870], zoom: 14});
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'tk',
+          maxZoom: 18,
+          id: 'mapbox.streets',
+          accessToken: 'pk.eyJ1Ijoiam9uY2h1cmNoIiwiYSI6ImNqZG9ibDN0eTAwamUyem80ZjIxbTAyNDYifQ.MnMddqFz5r_RrQfxwmhjmQ'
+      }).addTo(map)
+
+      // ughh mapbox is in Thai! Mom can't read thai
+      // Google maps is a pain, but it'll be worth it, once I get a timeline down, and the data massaging down
+      // let's get the venue payload goin
