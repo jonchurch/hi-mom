@@ -6,7 +6,7 @@ var foursquare = require('../foursquare')
 router.get('/', (req, res, next) => {
 
 	const today = new Date()
-	const daysAgo = Math.floor(new Date().setDate(today.getDate()-14) / 1000)
+	const daysAgo = Math.floor(new Date().setDate(today.getDate()-7) / 1000)
 
 	foursquare.Users.getCheckins('self', {afterTimestamp: daysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, checkins) => {
 		if (err) {

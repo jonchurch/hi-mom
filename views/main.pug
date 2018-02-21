@@ -18,6 +18,7 @@ block content
   script.
     var venues = !{JSON.stringify(venues)}
     var map = L.map('map',{ center: [18.7680, 98.9870], zoom: 14});
+    map.scrollWheelZoom.disable()
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'tk',
         maxZoom: 18,
