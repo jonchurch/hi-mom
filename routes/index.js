@@ -42,7 +42,8 @@ router.get('/timeline', function(req, res, next) {
 		} else {
 			console.log(data.checkins.items.length)
 			console.log(data.checkins.items[0].venue.categories[0].name)
-			res.render('timeline', {checkins: data.checkins.items})
+			res.send(data.checkins.items)
+			// res.render('timeline', {checkins: data.checkins.items})
 		}
 	})
 	
