@@ -4,16 +4,17 @@ var router = express.Router();
 var foursquare = require('../foursquare')
 
 /* GET home page. */
-router.get('/map', function(req, res, next) {
-	// get our map data from foursquare!
-	//
-  res.render('map', { venues: [true] });
-});
+//router.get('/map', function(req, res, next) {
+//	// get our map data from foursquare!
+//	//
+//  res.render('map', { venues: [true] });
+//});
 
-router.get('/data', (req, res) => {
+router.get('/map', (req, res) => {
 	// foursquare.Users.getCheckins('self',{limit: 30}, process.env.ACCESS_TOKEN, (err, data) => {
 	const today = new Date()
-	const thirtyDaysAgo = Math.floor(new Date().setDate(today.getDate()-30) / 1000)
+	// @TODO currently only getting 7 days worth of data, so as to center in CNX
+	const thirtyDaysAgo = Math.floor(new Date().setDate(today.getDate()-7) / 1000)
 	console.log({thirtyDaysAgo})
 	foursquare.Users.getVenueHistory('self',{afterTimestamp: thirtyDaysAgo }, process.env.ACCESS_TOKEN, (err, data) => {
 		if (err) {
@@ -21,7 +22,8 @@ router.get('/data', (req, res) => {
 			console.log({err})
 		} else {
 			// console.log(data.checkins.items.length)
-			res.send(data)
+			console.log(data.venues.items[0])
+			res.render('map', { venues: data.venues.items });
 			// so now for the map, I want to crunch the data down to unique venues I have checked into
 			// I want venues data, where I de-dupe the checkins (maybe theres an API call for this?)
 				// Okay so there IS a api call to grab my venue history, dunno if that's what I want though, grrr
