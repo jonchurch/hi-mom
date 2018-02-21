@@ -3,6 +3,34 @@ var router = express.Router();
 
 var foursquare = require('../foursquare')
 
+router.get('/', (req, res, next) => {
+
+	const today = new Date()
+	const daysAgo = Math.floor(new Date().setDate(today.getDate()-14) / 1000)
+
+	foursquare.Users.getCheckins('self', {afterTimestamp: daysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, checkins) => {
+		if (err) {
+			res.send(err)
+		} else {
+			console.log(checkins.checkins.items.length)
+			console.log(checkins.checkins.items[0].venue.categories[0].name)
+			foursquare.Users.getVenueHistory('self',{afterTimestamp: daysAgo}, process.env.ACCESS_TOKEN, (err, venues) => {
+				if (err) {
+					res.send(err)
+					console.log({err})
+				} else {
+					// console.log(data.checkins.items.length)
+					res.render('main', { 
+						venues: venues.venues.items,
+						checkins: checkins.checkins.items
+					});
+				}
+
+			})
+		}
+	})
+})
+
 router.get('/timeline', function(req, res, next) {
 	// lets check it daw
 	const today = new Date()
