@@ -3,12 +3,51 @@ var router = express.Router();
 
 var foursquare = require('../foursquare')
 
-/* GET home page. */
-//router.get('/map', function(req, res, next) {
-//	// get our map data from foursquare!
-//	//
-//  res.render('map', { venues: [true] });
-//});
+router.get('/', (req, res, next) => {
+
+	const today = new Date()
+	const daysAgo = Math.floor(new Date().setDate(today.getDate()-7) / 1000)
+
+	foursquare.Users.getCheckins('self', {afterTimestamp: daysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, checkins) => {
+		if (err) {
+			res.send(err)
+		} else {
+			console.log(checkins.checkins.items.length)
+			console.log(checkins.checkins.items[0].venue.categories[0].name)
+			foursquare.Users.getVenueHistory('self',{afterTimestamp: daysAgo}, process.env.ACCESS_TOKEN, (err, venues) => {
+				if (err) {
+					res.send(err)
+					console.log({err})
+				} else {
+					// console.log(data.checkins.items.length)
+					res.render('main', { 
+						venues: venues.venues.items,
+						checkins: checkins.checkins.items
+					});
+				}
+
+			})
+		}
+	})
+})
+
+router.get('/timeline', function(req, res, next) {
+	// lets check it daw
+	const today = new Date()
+	const thirtyDaysAgo = Math.floor(new Date().setDate(today.getDate()-30) / 1000)
+	// p arbitrary in terms of the data I'm getting right now, limiting it to the past 30 days, up to 100 checkins, real rando
+	foursquare.Users.getCheckins('self', {afterTimestamp: thirtyDaysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, data) => {
+		if (err) {
+			res.send(err)
+		} else {
+			console.log(data.checkins.items.length)
+			console.log(data.checkins.items[0].venue.categories[0].name)
+			res.send(data.checkins.items)
+			// res.render('timeline', {checkins: data.checkins.items})
+		}
+	})
+	
+});
 
 router.get('/map', (req, res) => {
 	// foursquare.Users.getCheckins('self',{limit: 30}, process.env.ACCESS_TOKEN, (err, data) => {
@@ -22,11 +61,7 @@ router.get('/map', (req, res) => {
 			console.log({err})
 		} else {
 			// console.log(data.checkins.items.length)
-			console.log(data.venues.items[0])
 			res.render('map', { venues: data.venues.items });
-			// so now for the map, I want to crunch the data down to unique venues I have checked into
-			// I want venues data, where I de-dupe the checkins (maybe theres an API call for this?)
-				// Okay so there IS a api call to grab my venue history, dunno if that's what I want though, grrr
 		}
 
 	})
