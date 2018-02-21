@@ -5,6 +5,6 @@ mixin checkinBox(item)
         .h4.font-italic "#{item.shout}"
       if item.photos.count > 0
         each pic in item.photos.items
-          img.img-thumbnail(src=pic.prefix + '100x100' + pic.suffix)
+          img.img-thumbnail(src=pic.prefix + '300x300' + pic.suffix)
         
       .time-ago #{moment(item.createdAt * 1000).fromNow()}
