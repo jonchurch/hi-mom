@@ -13,6 +13,7 @@ router.get('/timeline', function(req, res, next) {
 			res.send(err)
 		} else {
 			console.log(data.checkins.items.length)
+			console.log(data.checkins.items[0].venue.categories[0].name)
 			res.render('timeline', {checkins: data.checkins.items})
 		}
 	})
@@ -31,7 +32,6 @@ router.get('/map', (req, res) => {
 			console.log({err})
 		} else {
 			// console.log(data.checkins.items.length)
-			console.log(data.venues.items[0])
 			res.render('map', { venues: data.venues.items });
 		}
 

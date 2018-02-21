@@ -25,6 +25,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use((err, req, res, next) => {
+// 	res.locals.moment = moment
+// 	next()
+// })
+app.locals.moment = moment
+
 app.use('/', index);
 app.use('/users', users);
 
@@ -40,7 +46,6 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-	res.local.moment = moment
 
   // render the error page
   res.status(err.status || 500);
