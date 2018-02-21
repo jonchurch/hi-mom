@@ -7,11 +7,12 @@ router.get('/timeline', function(req, res, next) {
 	// lets check it daw
 	const today = new Date()
 	const thirtyDaysAgo = Math.floor(new Date().setDate(today.getDate()-30) / 1000)
-	foursquare.Users.getCheckins('self', {afterTimestamp: thirtyDaysAgo}, process.env.ACCESS_TOKEN, (err, data) => {
+	// p arbitrary in terms of the data I'm getting right now, limiting it to the past 30 days, up to 100 checkins, real rando
+	foursquare.Users.getCheckins('self', {afterTimestamp: thirtyDaysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, data) => {
 		if (err) {
 			res.send(err)
 		} else {
-			console.log({data})
+			console.log(data.checkins.items.length)
 			res.render('timeline', {checkins: data.checkins.items})
 		}
 	})
