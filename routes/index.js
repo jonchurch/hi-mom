@@ -3,12 +3,20 @@ var router = express.Router();
 
 var foursquare = require('../foursquare')
 
-/* GET home page. */
-//router.get('/map', function(req, res, next) {
-//	// get our map data from foursquare!
-//	//
-//  res.render('map', { venues: [true] });
-//});
+router.get('/timeline', function(req, res, next) {
+	// lets check it daw
+	const today = new Date()
+	const thirtyDaysAgo = Math.floor(new Date().setDate(today.getDate()-30) / 1000)
+	foursquare.Users.getCheckins('self', {afterTimestamp: thirtyDaysAgo}, process.env.ACCESS_TOKEN, (err, data) => {
+		if (err) {
+			res.send(err)
+		} else {
+			console.log({data})
+			res.render('timeline', {checkins: data.checkins.items})
+		}
+	})
+	
+});
 
 router.get('/map', (req, res) => {
 	// foursquare.Users.getCheckins('self',{limit: 30}, process.env.ACCESS_TOKEN, (err, data) => {
@@ -24,9 +32,6 @@ router.get('/map', (req, res) => {
 			// console.log(data.checkins.items.length)
 			console.log(data.venues.items[0])
 			res.render('map', { venues: data.venues.items });
-			// so now for the map, I want to crunch the data down to unique venues I have checked into
-			// I want venues data, where I de-dupe the checkins (maybe theres an API call for this?)
-				// Okay so there IS a api call to grab my venue history, dunno if that's what I want though, grrr
 		}
 
 	})
