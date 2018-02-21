@@ -1,0 +1,32 @@
+extends layout
+block content
+  #map
+
+  #timeline
+    .list-group
+      each item in checkins
+        .list-group-item 
+          .h3.font-weight-bold=item.venue.name
+          // having trouble accessing this array... tells me categories doesnt exist BUT IT DOES?
+          // p=item.venue.categories.find(e => e.primary === true).name
+          if item.shout
+            .h4.font-italic "#{item.shout}"
+          // if item.photos.count > 0
+            
+          small=moment(item.createdAt * 1000).fromNow()
+
+  script.
+    var venues = !{JSON.stringify(venues)}
+    var map = L.map('map',{ center: [18.7680, 98.9870], zoom: 14});
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'tk',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1Ijoiam9uY2h1cmNoIiwiYSI6ImNqZG9ibDN0eTAwamUyem80ZjIxbTAyNDYifQ.MnMddqFz5r_RrQfxwmhjmQ'
+    }).addTo(map)
+    // lets loop through all these dang old venue items and snag up some spicy latlng!
+    var markers = venues.map(e => L.marker([e.venue.location.lat, e.venue.location.lng], {title: e.venue.name}).addTo(map))
+
+    var bounds = new L.LatLngBounds(markers.map(e => e.getLatLng()));
+    // console.log(markers[0].getLatLng)
+    map.fitBounds(bounds)
