@@ -24,8 +24,12 @@ block content
     });
 
     map.scrollWheelZoom.disable()
+
     function zoomMap(e) {
           map.setView(e.target.getLatLng(),map.getZoom() > 17 ? map.getZoom() : 17);
+    }
+    function goToMarker(m) {
+      console.log({m})
     }
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'tk',
