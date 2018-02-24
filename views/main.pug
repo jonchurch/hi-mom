@@ -5,6 +5,9 @@ include mixins/_checkinBox.pug
 block content
 
   h1.text-center Hi Mom!
+  h4.text-center.font-italic Where I am it is currently: 
+    span#clock ..loading
+    
 
   .sticky-top
     #map
@@ -17,6 +20,13 @@ block content
   script.
     // Snag the venues data from our pug data injection, hope this works??
     var venues = !{JSON.stringify(venues)}
+    // so every 20 seconds update the clock
+    var clockInterval = setInterval(function(){tzTimer()},10000);
+    function tzTimer() {
+      var time = moment()
+      document.getElementById('clock').innerHTML = time.tz('Asia/Bangkok').format('h:mm a dddd')
+    }
+    tzTimer()
 
     var map = L.map('map', {
         center: [18.7680, 98.9870],
