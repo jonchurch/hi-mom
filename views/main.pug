@@ -27,7 +27,7 @@ block content
     map.scrollWheelZoom.disable()
 
     // the zoom lowest (most zoomed out) level to focus to on venue focus
-    const focusZoomLevel = 17
+    const focusZoomLevel = 15
 
     function zoomMapTo(latLng) {
       map.setView(
@@ -45,6 +45,7 @@ block content
       // I need to lookup the appropriate marker, get its latLng, and center map
       const marker = markers.find(e => e.options.title === title)
       zoomMapTo(marker.getLatLng())
+      marker.openPopup()
     }
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'tk',
