@@ -23,13 +23,28 @@ block content
         zoom: 14
     });
 
+    // disable zoom scrolling on map
     map.scrollWheelZoom.disable()
 
-    function zoomMap(e) {
-          map.setView(e.target.getLatLng(),map.getZoom() > 17 ? map.getZoom() : 17);
+    // the zoom lowest (most zoomed out) level to focus to on venue focus
+    const focusZoomLevel = 17
+
+    function zoomMapTo(latLng) {
+      map.setView(
+        latLng, 
+        map.getZoom() > focusZoomLevel ? map.getZoom() : focusZoomLevel);
+    } 
+
+    // on marker click in map, center map on venue
+    function markerClick(e) {
+        zoomMapTo(e.target.getLatLng())
     }
-    function goToMarker(m) {
-      console.log({m})
+    // on checkin click in timeline, center map on venue
+    function checkinClick(title) {
+      console.log({title})
+      // I need to lookup the appropriate marker, get its latLng, and center map
+      const marker = markers.find(e => e.options.title === title)
+      zoomMapTo(marker.getLatLng())
     }
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'tk',
@@ -40,13 +55,9 @@ block content
         // lets loop through all these dang old venue items and snag up some spicy latlng!
     var markers = venues.map(e => L.marker([e.venue.location.lat, e.venue.location.lng], {
         title: e.venue.name
-    }).addTo(map).bindPopup(e.venue.name).on('click', zoomMap))
+    }).addTo(map).bindPopup(e.venue.name).on('click', markerClick))
 
     var bounds = new L.LatLngBounds(markers.map(e => e.getLatLng()));
     // console.log(markers[0].getLatLng)
     map.fitBounds(bounds)
 
-    console.log({
-            markers
-        })
-        // on title click in checkinBox, center map on venue
