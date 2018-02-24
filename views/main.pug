@@ -27,10 +27,10 @@ block content
     map.scrollWheelZoom.disable()
 
     // the zoom lowest (most zoomed out) level to focus to on venue focus
-    const focusZoomLevel = 15
+    const focusZoomLevel = 16
 
     function zoomMapTo(latLng) {
-      map.setView(
+      map.flyTo(
         latLng, 
         map.getZoom() > focusZoomLevel ? map.getZoom() : focusZoomLevel);
     } 
