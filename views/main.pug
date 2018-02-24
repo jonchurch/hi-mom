@@ -47,12 +47,15 @@ block content
       zoomMapTo(marker.getLatLng())
       marker.openPopup()
     }
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            attribution: 'tk',
-            maxZoom: 18,
-            id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1Ijoiam9uY2h1cmNoIiwiYSI6ImNqZG9ibDN0eTAwamUyem80ZjIxbTAyNDYifQ.MnMddqFz5r_RrQfxwmhjmQ'
-        }).addTo(map)
+
+    var roads = L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map);
+
+    // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //         attribution: 'tk',
+    //         maxZoom: 18,
+    //         // id: 'mapbox.run-bike-hike',
+    //         // accessToken: 'pk.eyJ1Ijoiam9uY2h1cmNoIiwiYSI6ImNqZG9ibDN0eTAwamUyem80ZjIxbTAyNDYifQ.MnMddqFz5r_RrQfxwmhjmQ'
+    //     }).addTo(map)
         // lets loop through all these dang old venue items and snag up some spicy latlng!
     var markers = venues.map(e => L.marker([e.venue.location.lat, e.venue.location.lng], {
         title: e.venue.name
