@@ -12,3 +12,16 @@ a {
 	width: 100%;
 }
 
+
+/* Make map larger on mobile screens */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+    #map {
+		height: 600px;
+		width: 100%;
+	}
+
+}
