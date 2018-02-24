@@ -24,6 +24,9 @@ block content
     });
 
     map.scrollWheelZoom.disable()
+    function zoomMap(e) {
+          map.setView(e.target.getLatLng(),map.getZoom() > 17 ? map.getZoom() : 17);
+    }
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'tk',
             maxZoom: 18,
@@ -33,7 +36,7 @@ block content
         // lets loop through all these dang old venue items and snag up some spicy latlng!
     var markers = venues.map(e => L.marker([e.venue.location.lat, e.venue.location.lng], {
         title: e.venue.name
-    }).addTo(map))
+    }).addTo(map).bindPopup(e.venue.name).on('click', zoomMap))
 
     var bounds = new L.LatLngBounds(markers.map(e => e.getLatLng()));
     // console.log(markers[0].getLatLng)
