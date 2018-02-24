@@ -1,5 +1,5 @@
 mixin checkinBox(item)
-  div(class="list-group-item", onClick="checkinClick('" + item.venue.name + "')")
+  div(class="list-group-item", onClick='checkinClick("' + item.venue.name + '")')
       .h3.font-weight-bold=item.venue.name
       if item.shout
         .h4.font-italic "#{item.shout}"
