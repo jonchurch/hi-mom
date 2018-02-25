@@ -51,7 +51,6 @@ block content
     }
     // on checkin click in timeline, center map on venue
     function checkinClick(title) {
-      console.log({title})
       // I need to lookup the appropriate marker, get its latLng, and center map
       const marker = markers.find(e => e.options.title === title)
       zoomMapTo(marker.getLatLng())
@@ -60,18 +59,10 @@ block content
 
     var roads = L.gridLayer.googleMutant({type: 'terrain'}).addTo(map);
 
-    // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //         attribution: 'tk',
-    //         maxZoom: 18,
-    //         // id: 'mapbox.run-bike-hike',
-    //         // accessToken: 'pk.eyJ1Ijoiam9uY2h1cmNoIiwiYSI6ImNqZG9ibDN0eTAwamUyem80ZjIxbTAyNDYifQ.MnMddqFz5r_RrQfxwmhjmQ'
-    //     }).addTo(map)
-        // lets loop through all these dang old venue items and snag up some spicy latlng!
     var markers = venues.map(e => L.marker([e.venue.location.lat, e.venue.location.lng], {
         title: e.venue.name
     }).addTo(map).bindPopup(e.venue.name).on('click', markerClick))
 
     var bounds = new L.LatLngBounds(markers.map(e => e.getLatLng()));
-    // console.log(markers[0].getLatLng)
     map.fitBounds(bounds)
 
