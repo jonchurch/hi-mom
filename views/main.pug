@@ -20,11 +20,14 @@ block content
   script.
     // Snag the venues data from our pug data injection, hope this works??
     var venues = !{JSON.stringify(venues)}
+    var checkins = !{JSON.stringify(checkins)}
     // so every 20 seconds update the clock
     var clockInterval = setInterval(function(){tzTimer()},10000);
     function tzTimer() {
-      var time = moment()
-      document.getElementById('clock').innerHTML = time.tz('Asia/Bangkok').format('h:mm a dddd')
+      var utc = new Date().getTime()
+      var offsetInSeconds = checkins[0].timeZoneOffset * 60
+      var tzTime = moment(utc + offsetInSeconds)
+      document.getElementById('clock').innerHTML = tzTime.format('h:mm a dddd')
     }
     tzTimer()
 
