@@ -8,8 +8,6 @@ It is built on Express and uses PUG templates to render the map and timeline
 
 Clicking on a checkin will zoom you to the venue on the map
 
-**NOTE: Currently I've hardcoded the Local Time for Thailand, until I (or someone else!) makes this dynamic, you will just have to switch it out to the Timezone you are currently in. Make the change in the `main.pug` filei**
-
 ## Setup
 
 You will need to create a [Developer Account]() with Foursquare, and copy your CLIENT_ID and CLIENT_SECRET into your .env file. You will also need to provide a REDIRECT_URL in the form of `http://YOUR_HOST.com/callback` to snag your ACCESS_TOKEN for Swarm. Right now you'll have to visit `http:/YOU_HOST.com/login`  and copy paste the access token returned in your browser
