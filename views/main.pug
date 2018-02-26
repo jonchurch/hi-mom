@@ -29,6 +29,7 @@ block content
       var tzTime = moment(utc + offsetInSeconds)
       document.getElementById('clock').innerHTML = tzTime.format('h:mm a dddd')
     }
+    // run the clock on page load
     tzTimer()
 
     var map = L.map('map', {
