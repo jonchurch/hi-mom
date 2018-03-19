@@ -40,6 +40,29 @@ router.get('/', (req, res, next) => {
 	}
 })
 
+
+	foursquare.Users.getCheckins('self', {afterTimestamp: daysAgo, limit: 100}, process.env.ACCESS_TOKEN, (err, checkins) => {
+		if (err) {
+			res.send(err)
+		} else {
+			foursquare.Users.getVenueHistory('self',{afterTimestamp: daysAgo}, process.env.ACCESS_TOKEN, (err, venues) => {
+				if (err) {
+					res.send(err)
+					console.log({err})
+				} else {
+					res.render('main', { 
+						venues: venues.venues.items,
+						checkins: checkins.checkins.items
+					});
+				}
+
+			})
+		}
+	})
+})
+
+
+
 // shouldnt need the login, it's just a hack to get my ACCESS_TOKEN for now
 router.get('/login', function(req, res) {
   res.writeHead(303, { 'location': foursquare.getAuthClientRedirectUrl() });
@@ -68,8 +91,11 @@ router.get('/callback', function (req, res) {
       res.send('An error was thrown: ' + error.message);
     }
     else {
-		res.cookie('fsq_access_token', cryptography.encrypt(String(accessToken)), { maxAge: 900000, httpOnly: true });
-		res.redirect('/')
+			res.cookie('fsq_access_token', cryptography.encrypt(String(accessToken)), { maxAge: 900000, httpOnly: true });
+			res.redirect('/')
+			// grab this outta console and save to .env 
+			console.log({accessToken})
+			res.send({accessToken})
     }
   });
 });
