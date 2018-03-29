@@ -5,9 +5,9 @@ include mixins/_checkinBox.pug
 block content
 
   h1.text-center Hi Mom!
-  h4.text-center.font-italic Where I am it is currently: 
+  h4.text-center.font-italic Where I am it is currently:
     span#clock ..loading
-    
+
 
   .sticky-top
     #map
@@ -25,8 +25,8 @@ block content
     var clockInterval = setInterval(function(){tzTimer()},10000);
     function tzTimer() {
       var utc = new Date().getTime()
-      var offsetInSeconds = checkins[0].timeZoneOffset * 60
-      var tzTime = moment(utc + offsetInSeconds)
+      var offsetInMilliseconds = checkins[0].timeZoneOffset * 60 * 1000
+      var tzTime = moment(utc + offsetInMilliseconds)
       document.getElementById('clock').innerHTML = tzTime.format('h:mm a dddd')
     }
     // run the clock on page load
@@ -45,9 +45,9 @@ block content
 
     function zoomMapTo(latLng) {
       map.flyTo(
-        latLng, 
+        latLng,
         map.getZoom() > focusZoomLevel ? map.getZoom() : focusZoomLevel);
-    } 
+    }
 
     // on marker click in map, center map on venue
     function markerClick(e) {
